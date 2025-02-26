@@ -83,7 +83,7 @@ int quick_select(int q[], int l, int r, int k)
     int sl = j - l + 1;
     int sr = r - j;
     
-    if(k <= sl) return quick_select(q, l, j, k);
+    if(k <= sl) return quick_select(q, l, j, k); // 这里的等号要注意
     else return quick_select(q, j + 1, r, k - sl);
 }
 
