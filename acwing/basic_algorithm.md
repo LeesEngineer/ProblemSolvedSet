@@ -216,6 +216,63 @@ int main()
 }
 ```
 
+</br>
+
+# 数的范围
+
+</br>
+
+```
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+const int N = 1e6;
+
+int f[N];
+
+int binary_1(int l, int r, int x) // 找左边界
+{
+    while(l < r)
+    {
+        int mid = (l + r) >> 1;
+        if(f[mid] >= x) r = mid;
+        else l = mid + 1;
+    }
+    if(f[l] != x) return -1;
+    return l;
+}
+
+int binary_2(int l, int r, int x) // 找右边界
+{
+    while(l < r)
+    {
+        int mid = (l + r + 1) >> 1;
+        if(f[mid] <= x) l = mid;
+        else r = mid - 1;
+    }
+    if(f[l] != x) return -1;
+    return l;
+}
+
+int main()
+{
+    int n, q;
+    cin >> n >> q;
+    
+    for(int i = 0; i < n; i ++) cin >> f[i];
+    for(int i = 0; i < q; i ++)
+    {
+        int p;
+        cin >> p;
+        cout << binary_1(0, n - 1, p) << " " << binary_2(0, n - 1, p);
+        cout << endl;
+    }
+    return 0;
+}
+```
+
 
 
 
