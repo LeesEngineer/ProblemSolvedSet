@@ -3,7 +3,41 @@
 ![649fa856-deac-4170-a9e7-933c791da159](https://github.com/user-attachments/assets/47daae61-0509-4e03-8c43-260aeb6cbb76)
 
 ```
+#include <algorithm>
+#include <iostream>
+#include <cmath>
 
+using namespace std;
+
+int f[5];
+
+int main()
+{
+    int t;
+    cin >> t;
+
+    int x = 0;
+    while(true)
+    {
+        int n = t ++;
+        
+        int a = 0;
+        for(int i = 0; i < 4; i ++)
+        {
+            if(n == 0) break;
+            f[i] = n % 10;
+            n /= 10;
+            a ++;
+        }
+        
+        x = 0;
+        for(int i = 0; i < a; i ++)
+            x += pow(f[i], a);
+        
+        if(x == t - 1) break;
+    }
+    cout << x;
+}
 ```
 
 # B - 亲和数
@@ -11,7 +45,49 @@
 ![47f707e2-5951-4dcb-8d51-2602de4e015d](https://github.com/user-attachments/assets/3053e80f-d01b-41a6-80fd-54598cc08881)
 
 ```
+#include <iostream>
+#include <unordered_map>
 
+using namespace std;
+
+// 计算一个数的所有真因子之和
+int sumof(int value)
+{
+    int sum = 0;
+    for (int i = 1; i <= value / 2; i++)
+    {
+        if (value % i == 0)
+        {
+            sum += i;
+        }
+    }
+    return sum;
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    int i = n;
+
+    unordered_map<int, int> m; // 记录每个数的 sumof 值
+
+    while (true)
+    {
+        int x = sumof(i);
+        
+        // 检查是否满足亲和数的条件： sumof(x) == i 且 i != x
+        if (x != i && sumof(x) == i)
+        {
+            cout << i << " " << x << endl;
+            break; // 找到后退出
+        }
+
+        i++;
+    }
+
+    return 0;
+}
 ```
 
 # C - Switches and Lamps
