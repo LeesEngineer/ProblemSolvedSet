@@ -115,33 +115,235 @@ int main() {
 }
 ```
 
+</br>
 
+# C. Maximum Even Sum
 
+</br>
 
+<p>You are given two integers 𝑎 and 𝑏. You are to perform the following procedure:</p>
 
+<p>First, you choose an integer 𝑘 such that 𝑏 is divisible by 𝑘. Then, you simultaneously multiply 𝑎 by 𝑘 and divide 𝑏 by 𝑘.</p>
 
+<p>Find the greatest possible even value of 𝑎+𝑏. If it is impossible to make 𝑎+𝑏 even, output −1 instead.</p>
 
+<b>Input</b>
 
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤104). The description of the test cases follows.</p>
 
+<p>The first line of each test case contains two integers 𝑎 and 𝑏 (1≤𝑎,𝑏≤𝑎⋅𝑏≤1018).</p>
 
+<b>Output</b>
 
+<p>For each test case, output the maximum even value of 𝑎+𝑏 on a new line.</p>
 
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	ios::sync_with_stdio(false),cin.tie(0);
+	int T;
+	long long a,b,cb;
+	for(cin>>T;T>0;T--)
+	{
+		cin>>a>>b;
+        if((a * b) & 1)
+            cout << a * b + 1 << endl;
+        else
+        {
+            if(b & 1) cout << -1 << endl;
+            else
+            {
+                if((a*b/2) & 1) cout << -1 << endl;
+                else cout << a*b/2+2 << endl;
+            }
+        }
+	}
+	return 0;
+}
+```
 
+</br>
 
+# D. Replace with Occurrences
 
+</br>
 
+<p>Given an array 𝑎, let 𝑓(𝑥) be the number of occurrences of 𝑥 in the array 𝑎. For example, when 𝑎=[1,2,3,1,4], then 𝑓(1)=2 and 𝑓(3)=1.</p>
 
+<p>You have an array 𝑏 of size 𝑛. Please determine if there is an array 𝑎 of size 𝑛 such that 𝑓(𝑎𝑖)=𝑏𝑖 for all 1≤𝑖≤𝑛. If there is one, construct it.</p>
 
+<b>Input</b>
 
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤104). The description of the test cases follows.</p>
 
+<p>The first line of each test case contains an integer 𝑛 (1≤𝑛≤2⋅105).</p>
 
+<p>The second line contains 𝑛 integers 𝑏1,𝑏2,…,𝑏𝑛 (1≤𝑏𝑖≤𝑛).</p>
 
+<p>It is guaranteed that the sum of 𝑛 over all test cases does not exceed 2⋅105.</p>
 
+<b>Output</b>
 
+<p>For each test case, output −1 if there is no valid array 𝑎.</p>
 
+<p>Otherwise, print the array 𝑎 of 𝑛 integers on a new line. The elements should satisfy 1≤𝑎𝑖≤𝑛.</p>
 
+```
+#include <iostream>
+#include <vector>
 
+using namespace std;
 
+const int N = 2e5 + 10;
+int a[N];
+vector<int> b[N];
+
+int main()
+{
+    int t;
+    cin >> t;
+    while(t --)
+    {   
+        int n;
+        cin >> n;
+        for(int i = 0; i < n; i ++)
+        {
+            int c;
+            cin >> c;
+            b[c].push_back(i);
+        }
+        int flag = 0;
+        int c = 0;
+        for(int i = 1; i <= n; i ++)
+        {
+            if(b[i].size() % i != 0) 
+            {
+                flag = 1;
+                break;
+            }
+            for(int j = 0; j < b[i].size(); j ++)
+            {
+                if(j % i == 0) c ++;
+                a[b[i][j]] = c;
+            }
+        }
+        if(flag) cout << -1;
+        else
+            for(int i = 0; i < n; i ++)
+                cout << a[i] << " ";
+        cout << endl;
+        for(int i=1;i<=n;i++)b[i].clear();
+    }
+}
+```
+
+</br>
+
+# E. Mexification
+
+</br>
+
+<p>You are given an array 𝑎 of size 𝑛 and an integer 𝑘. You do the following procedure 𝑘 times:</p>
+
+<p>For each element 𝑎𝑖, you set 𝑎𝑖 to mex∗(𝑎1,𝑎2,…,𝑎𝑖−1,𝑎𝑖+1,𝑎𝑖+2,…,𝑎𝑛). In other words, you set 𝑎𝑖 to the mex of all other elements in the array. This is done for all elements in the array at the same time.</p>
+
+<p>Please find the sum of elements in the array after all 𝑘 operations.</p>
+
+<p>∗The minimum excluded (MEX) of a collection of integers 𝑑1,𝑑2,…,𝑑𝑘 is defined as the smallest non-negative integer 𝑥 which does not occur in the collection 𝑑.</p>
+
+<b>Input</b>
+
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤104). The description of the test cases follows.</p>
+
+<p>The first line contains two integers 𝑛 and 𝑘 (2≤𝑛≤2⋅105,1≤𝑘≤109) – the number of elements in 𝑎 and the number of operations done.</p>
+
+<p>The second line contains 𝑛 integers 𝑎1,𝑎2,…,𝑎𝑛 (0≤𝑎𝑖≤𝑛).</p>
+
+<p>It is guaranteed that the sum of 𝑛 over all test cases does not exceed 2⋅105.</p>
+
+<b>Output</b>
+
+<p>For each test case, output the sum of elements after all 𝑘 operations on a new line.</p>
+
+```
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+typedef long long LL;
+
+const int N = 2e5 + 10;
+int a[N];
+int c[N];
+
+void solve(int n)
+{
+    memset(c, 0, sizeof c);
+
+    int mex = -1;
+
+    for(int i = 0; i < n; i ++) c[a[i]] ++;
+
+    for(int i = 0; i <= n; i ++)
+        if(!c[i])
+        {
+            mex = i;
+            break;
+        }
+    
+    for(int i = 0; i < n; i ++)
+    {
+        if(c[a[i]] == 1) a[i] = min(mex, a[i]);
+        else a[i] = mex;
+    }
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    while(t --)
+    {
+        int n, k;
+        cin >> n >> k;
+        for(int i = 0; i < n; i ++) cin >> a[i];
+
+        if(k > 1)
+            k = (1 << 1) + (k & 1);
+
+        for(int i = 0; i < k; i ++) solve(n);
+
+        LL res = 0;
+        for(int i = 0; i < n; i ++) res += a[i];
+        cout << res << endl;
+    }
+}
+```
+
+<p>依次介绍几种情况吧：</p>
+
+1. 如果存在从零开始的排列，且排列内无重复数字
+
+   - 第一次操作：属于排列的部分保持不变，剩下的变为 mex。
+  
+   - 第二次操作：.....M -> .....M+1
+  
+   - 第三次操作：.....M+1 -> .....M
+  
+   - 呈现周期性（波动性）
+
+2. 如果存在从零开始的排列，但排列内有重复数字
+
+   - 可能会出现一个或多个不从零开始的排列，但这些排列内无重复数字 -> OOOOO.....OOOOO......M or .....OOOOOM
+  
+   - -> M or .....M
+  
+   - 呈现周期性（波动性）
+
+3. 可以证明所有情况都符合，
 
 
 
