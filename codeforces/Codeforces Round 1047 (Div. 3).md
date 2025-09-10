@@ -345,25 +345,196 @@ int main()
 
 3. 可以证明所有情况都符合，
 
+</br>
 
+# F. Prefix Maximum Invariance
 
+</br>
 
+<p>Given two arrays 𝑥 and 𝑦 both of size 𝑚, let 𝑧 be another array of size 𝑚 such that the prefix maximum at each position of 𝑧 is the same as the prefix maximum at each position of 𝑥. Formally, max(𝑥1,𝑥2,…,𝑥𝑖)=max(𝑧1,𝑧2,…,𝑧𝑖) should hold for all 1≤𝑖≤𝑚. Define 𝑓(𝑥,𝑦) to be the maximum number of positions where 𝑧𝑖=𝑦𝑖 over all possible arrays 𝑧.</p>
 
+<p>You are given two sequences of integers 𝑎 and 𝑏, both of size 𝑛. Please find the value of ∑𝑛𝑙=1∑𝑛𝑟=𝑙𝑓([𝑎𝑙,𝑎𝑙+1,…,𝑎𝑟],[𝑏𝑙,𝑏𝑙+1,…,𝑏𝑟]).</p>
 
+<b>Input</b>
 
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤104). The description of the test cases follows.</p>
 
+<p>The first line of each test case contains an integer 𝑛 (1≤𝑛≤2⋅105).</p>
 
+<p>The second line contains 𝑛 integers 𝑎1,𝑎2,…,𝑎𝑛 (1≤𝑎𝑖≤2⋅𝑛).</p>
 
+<p>The third line contains 𝑛 integers 𝑏1,𝑏2,…,𝑏𝑛 (1≤𝑏𝑖≤2⋅𝑛).</p>
 
+<p>It is guaranteed that the sum of 𝑛 over all test cases does not exceed 2⋅105.</p>
 
+<b>Output</b>
 
+<p>For each test case, output the sum of 𝑓([𝑎𝑙,𝑎𝑙+1,…,𝑎𝑟],[𝑏𝑙,𝑏𝑙+1,…,𝑏𝑟]) over all pairs of (𝑙,𝑟).</p>
 
+```
+#include<bits/stdc++.h>
+using namespace std;
+int a[200000],b[200000],l[200000];
+int stk[200000],p;
+int main(){
+	ios::sync_with_stdio(false),cin.tie(0);
+	int T,n,i,L,R,mid;
+	long long ans;
+	for(cin>>T;T>0;T--)
+	{
+		cin>>n;
+		for(i=0;i<n;i++)cin>>a[i];
+		for(i=0;i<n;i++)cin>>b[i];
+		p=0;
+		for(i=0;i<n;i++)
+		{
+			while(p>0&&a[stk[p-1]]<a[i])p--;
+			if(a[i]==b[i])l[i]=i;
+			else
+			{
+				L=-1;
+				R=p;
+				while(R-L>1)
+				{
+					mid=(L+R)/2;
+					if(a[stk[mid]]>=max(a[i],b[i]))L=mid;
+					else R=mid;
+				}
+				if(L==-1)l[i]=-1;
+				else l[i]=stk[L];
+			}
+			stk[p]=i;
+			p++;
+		}
+		ans=0;
+		for(i=0;i<n;i++)ans+=(long long)(l[i]+1)*(long long)(n-i);
+		cout<<ans<<'\n';
+	}
+	return 0;
+}
+```
 
+</br>
 
+# G. Cry Me a River
 
+</br>
 
+<p>There is a directed acyclic graph with 𝑛 nodes and 𝑚 edges. Each node is initially colored blue.</p>
 
+<p>Let's define the fun graph game as follows:</p>
 
+- Initially, a token is placed on node 𝑠
+
+- Cry and River take turns moving the token to a node such that there exists a directed edge from its current position to that node, with Cry going first.
+
+- Cry wins if the token ever reaches a node with no outgoing edges, after either player's turn.
+
+- River wins if the token reaches a red node after either player's turn.
+
+- If the players reach a node that is both red and does not have outgoing edges, River wins.
+
+<p>Since the graph is acyclic, it can be shown that the game always ends in a finite number of turns.</p>
+
+<p>Note that Cry and River can win the game immediately if the starting node 𝑠 doesn't have outgoing edges, or is red respectively.</p>
+
+<p>You must handle 𝑞 queries of the following kind:</p>
+
+- 1 u: update the color of node 𝑢 to red. It is guaranteed that node 𝑢 was blue before this update.
+
+- 2 u: If a fun graph game is played with the token initially at node 𝑢, and both players play optimally, does Cry win?
+
+<b>Input</b>
+
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤104). The description of the test cases follows.</p>
+
+<p>The first line of each test case contains three integers 𝑛, 𝑚, 𝑞 (2≤𝑛≤2⋅105 ,1≤𝑚,𝑞≤2⋅105).</p>
+
+<p>The following 𝑚 lines each contain two integers 𝑢 and 𝑣 (1≤𝑢,𝑣≤𝑛), meaning that there is an edge from 𝑢 to 𝑣.</p>
+
+<p>The following 𝑞 lines each contain two integers 𝑥 and 𝑢 (1≤𝑥≤2,1≤𝑢≤𝑛) – denoting the type of query and the node that the query is done on.</p>
+
+<p>It is guaranteed that the given graph is a directed acyclic graph. Additionally, no edge is given more than once.</p>
+
+<p>It is guaranteed that the sum of 𝑛, the sum of 𝑚, and the sum of 𝑞 each do not exceed 2⋅105 over all test cases.</p>
+
+<b>Output</b>
+
+<p>For each query of the second type, output YES if Cry wins. Otherwise, output NO. Each letter may be outputted in uppercase or lowercase.</p>
+
+```
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+const int N = 2e5 + 10;
+int h[N], e[N], ne[N], idx, p[N];
+int dp[N][2];
+
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx ++;
+}
+
+void dfs(int u, int tag)
+{
+    if(dp[u][tag]) return;
+    dp[u][tag] = 1;
+
+    for(int i = h[u]; i != -1; i = ne[i])
+    {
+        int j = e[i];
+        if(tag == 0) dfs(j, 1);
+        else
+        {
+            p[j] --;
+            if(!p[j]) dfs(j, 0);
+        }
+    }
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    while(t --)
+    {
+        memset(dp, 0, sizeof dp);
+        memset(h, -1, sizeof h);
+        memset(p, 0, sizeof p);
+        idx = 0;
+
+        int n, m, q;
+        cin >> n >> m >>q;
+        for(int i = 0; i < m; i ++)
+        {
+            int a, b;
+            cin >> a >> b;
+            add(b, a);
+            p[a] ++;
+        }
+
+        while(q --)
+        {
+            int op, u;
+            cin >> op >> u;
+            if(op == 1)
+            {
+                dfs(u, 1);
+                dfs(u, 0);
+            }
+            else
+            {
+                if(dp[u][0] == 0) cout << "YES" << endl;
+                else cout << "NO" << endl;
+            }
+        }
+    }
+}
+```
+
+<p></p>
 
 
 
