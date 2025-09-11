@@ -138,29 +138,29 @@ int main() {
 <p>For each test case, output the maximum even value of 𝑎+𝑏 on a new line.</p>
 
 ```
-#include<bits/stdc++.h>
+#include <iostream>
+
 using namespace std;
+
 int main()
 {
-	ios::sync_with_stdio(false),cin.tie(0);
-	int T;
-	long long a,b,cb;
-	for(cin>>T;T>0;T--)
-	{
-		cin>>a>>b;
-        if((a * b) & 1)
-            cout << a * b + 1 << endl;
+    int t;
+    cin >> t;
+    while(t --)
+    {
+        long long a, b;
+        cin >> a >> b;
+        if(a*b & 1) cout << a*b+1 << endl;
         else
         {
             if(b & 1) cout << -1 << endl;
             else
             {
-                if((a*b/2) & 1) cout << -1 << endl;
-                else cout << a*b/2+2 << endl;
+                if(a*b/2 & 1) cout << -1 << endl;
+                else cout << a*b/2 + 2 << endl;
             }
         }
-	}
-	return 0;
+    }
 }
 ```
 
