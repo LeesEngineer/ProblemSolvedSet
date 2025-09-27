@@ -208,6 +208,42 @@ int main()
 
 </br>
 
+<p>For an array 𝑏 of length 𝑚, you may perform the following two operations:</p>
+
+1. Select an index 1≤𝑖≤𝑚−1. Then, swap the values of 𝑏𝑖 and 𝑏𝑖+1.
+
+2. Select an index 1≤𝑖≤𝑚−2. Then, swap the values of 𝑏𝑖 and 𝑏𝑖+2.
+
+<p>However, you can only perform operation 2 at most once.</p>
+
+<p>We define 𝑓(𝑏) as the minimum number of operations (using both operation 1 and operation 2) required to sort array 𝑏 in non-decreasing order, and 𝑔(𝑏) as the minimum number of operations required to sort array 𝑏 in non-decreasing order using only operation 1.</p>
+
+<p>The array 𝑏 is perfect if 𝑓(𝑏)=𝑔(𝑏). In other words, the ability to use operation 2 does not reduce the number of operations required to sort array 𝑏 compared to using only adjacent swaps.</p>
+
+<p>You are given a permutation 𝑎 of length 𝑛∗, and must answer 𝑞 queries. Each query consists of two integers 𝑙 and 𝑟 (1≤𝑙≤𝑟≤𝑛), representing the subarray 𝑎[𝑙…𝑟]†. For each query, determine whether the subarray 𝑎[𝑙…𝑟] is perfect.</p>
+
+<p>∗A permutation of length 𝑛 is an array consisting of 𝑛 distinct integers from 1 to 𝑛 in arbitrary order. For example, [2,3,1,5,4] is a permutation, but [1,2,2] is not a permutation (2 appears twice in the array), and [1,3,4] is also not a permutation (𝑛=3 but there is 4 in the array).</p>
+
+<p>†The subarray 𝑎[𝑙…𝑟] includes all elements from index 𝑙 to 𝑟, i.e., [𝑎𝑙,𝑎𝑙+1,𝑎𝑙+2,…,𝑎𝑟].</p>
+
+<b>Input</b>
+
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤5⋅104). The description of the test cases follows.</p>
+
+<p>The first line of each test case contains two integers 𝑛, 𝑞 (1≤𝑛,𝑞≤5⋅105) — the length of array 𝑎 and the number of queries.</p>
+
+<p>The second line of each test case contains 𝑛 integers 𝑎1,𝑎2,…,𝑎𝑛 (1≤𝑎𝑖≤𝑛) — the elements in permutation 𝑎.</p>
+
+<p>Each of the next 𝑞 lines contains two integers 𝑙 and 𝑟 (1≤𝑙≤𝑟≤𝑛) — the left and right endpoints of the queried subarray.</p>
+
+<p>It is guaranteed that both the sum of 𝑛 and the sum of 𝑞 over all test cases do not exceed 5⋅105.</p>
+
+<b>Output</b>
+
+<p>For each test case, output "YES" if queried subarray 𝑎[𝑙…𝑟] is perfect, and "NO" otherwise.</p>
+
+<p>You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.</p>
+
 ```
 #include <iostream>
 #include <algorithm>
@@ -319,23 +355,157 @@ int main()
 
 </br>
 
-# 
+# E1. Maple and Tree Beauty (Easy Version)
 
 </br>
 
+<p>Maple is given a rooted tree consisting of 𝑛 vertices numbered from 1 to 𝑛, where the root has index 1. Each vertex of the tree is labeled either zero or one. Unfortunately, Maple forgot how the vertices are labeled and only remembers that there are exactly 𝑘 zeros and 𝑛−𝑘 ones.</p>
 
+<p>For each vertex, we define the name of the vertex as the binary string formed by concatenating the labels of the vertices from the root to the vertex. More formally, name1=label1 and name𝑢=name𝑝𝑢+label𝑢 for all 2≤𝑢≤𝑛, where 𝑝𝑢 is the parent of vertex 𝑢 and + represents string concatenation.</p>
 
+<p>The beauty of the tree is equal to the length of the longest common subsequence∗ of the names of all the leaves†. Your task is to determine the maximum beauty among all labelings of the tree with exactly 𝑘 zeros and 𝑛−𝑘 ones.</p>
 
+<b>Input</b>
 
+<p>Each test contains multiple test cases. The first line contains the number of test cases 𝑡 (1≤𝑡≤50). The description of the test cases follows.</p>
 
+<p>The first line of each test case contains two integers 𝑛 and 𝑘 (2≤𝑛≤1000, 0≤𝑘≤𝑛) — the number of vertices and the number of vertices labeled with zero, respectively.</p>
 
+<p>The second line contains 𝑛−1 integers 𝑝2,𝑝3,…,𝑝𝑛 (1≤𝑝𝑖≤𝑖−1) — the parent of vertex 𝑖.</p>
 
+<p>Note that there are no constraints on the sum of 𝑛 over all test cases.</p>
 
+<b>Output</b>
 
+<p>For each test case, output a single integer representing the maximum beauty among all labelings of the tree with exactly 𝑘 zeros and 𝑛−𝑘 ones.</p>
 
+```
+#include <iostream>
+#include <cstring>
 
+using namespace std;
 
+const int N = 1010;
 
+int depth[N], w[N], isroot[N], dp[N][N];
+
+int main()
+{
+    int t;
+    cin >> t;
+    while(t --)
+    {
+        int n, k;
+        cin >> n >> k;
+
+        memset(depth, 0, sizeof depth);
+        memset(w, 0, sizeof w);
+        memset(isroot, 0, sizeof isroot);
+        memset(dp, 0, sizeof dp);
+
+        depth[1] = 1;
+        w[1] = 1;
+        for(int i = 2; i <= n; i ++)
+        {
+            int x;
+            cin >> x;
+            depth[i] = depth[x] + 1;
+            w[depth[i]] ++;
+            isroot[x] = 1;
+        }
+
+        int d = n + 1;
+        for(int i = 1; i <= n; i ++)
+            if(!isroot[i]) d = min(d, depth[i]);
+
+        int rest = 0;
+        for(int i = 1; i <= n; i ++)
+            if(depth[i] > d) rest ++;
+
+        dp[0][0] = 1;
+        for(int i = 1; i <= d; i ++)
+            for(int j = 0; j <= k; j ++)
+            {
+                dp[i][j] = dp[i-1][j];
+                if(j >= w[i] && dp[i-1][j-w[i]]) dp[i][j] = 1;
+            }
+        
+        int m;
+        for(int i = 0; i <= k; i ++)
+            if(dp[d][i]) m = i;
+
+        int x = k - m;
+        if(x <= rest) cout << d;
+        else cout << d-1;
+        cout << endl;
+    }
+}
+```
+
+<b>hard version</b>
+
+```
+#include <iostream>
+#include <cstring>
+#include <bitset>
+
+using namespace std;
+
+const int N = 2e5 + 10;
+
+int depth[N], w[N], isroot[N];
+bitset<N> dp;
+
+int main()
+{
+    int t;
+    cin >> t;
+    while(t --)
+    {
+        memset(depth, 0, sizeof depth);
+        memset(w, 0, sizeof w);
+        memset(isroot, 0, sizeof isroot);
+        depth[1] = 1;
+        w[1] = 1;
+        dp.reset();
+
+        int n, k;
+        cin >> n >> k;
+        for(int i = 2; i <= n; i ++)
+        {
+            int x;
+            cin >> x;
+            depth[i] = depth[x] + 1;
+            w[depth[i]] ++;
+            isroot[x] = true;
+        }
+
+        int d = n + 1;
+        for(int i = 1; i <= n; i ++)
+            if(!isroot[i])
+                d = min(d, depth[i]);
+
+        int rest = 0;
+        for(int i = 1; i <= n; i ++)
+            if(depth[i] > d)
+                rest ++;
+
+        dp[0] = 1;
+        for(int i = 1; i <= d; i ++)
+            dp |= dp << w[i];
+        
+        int m;
+        for(int i = 0; i <= k; i ++)
+            if(dp[i])
+                m = i;
+
+        int x = k - m;
+        if(x <= rest) cout << d;
+        else cout << d-1;
+        cout << endl;
+    }
+}
+```
 
 
 
